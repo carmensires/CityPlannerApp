@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlacesActivity">
+
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:padding="20dp"
+        android:gravity="center"
+        android:src="@drawable/title" />
+
+    <TextView
+        android:id="@+id/textPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How many places do you want to visit?"
+        android:textSize="23dp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginHorizontal="20dp"/>
+
+
+    <EditText
+        android:id="@+id/nPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:layout_constraintTop_toBottomOf="@+id/textPlaces"
+        android:inputType="number"
+        android:layout_margin="20dp"
+        android:background="@color/grey"
+        android:paddingHorizontal="20dp"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="CALCULATE ROUTE"
+        android:textSize="22dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/nPlaces"
+        android:layout_margin="20dp"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="25dp"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
