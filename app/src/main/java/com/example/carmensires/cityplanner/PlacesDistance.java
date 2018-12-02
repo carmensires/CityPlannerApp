@@ -6,6 +6,7 @@ import android.location.Geocoder;
 import java.util.ArrayList;
 import java.util.List;
 
+//this class is used to calculate the route with less total distance
 public class PlacesDistance {
 
     private static ArrayList<PlaceDist> listPlaces=new ArrayList<>();
@@ -24,10 +25,12 @@ public class PlacesDistance {
 
     public static ArrayList<PlaceDist> getOptimalRoute(ArrayList<PlaceDist> listPlaces)
     {
+        //2 iterations, because on the first one, the starting point is random
         ArrayList<PlaceDist> initialRoute = getShortestRoute(listPlaces, listPlaces.get(0));
         return getShortestRoute(initialRoute,initialRoute.get(Search.getnPlaces()-1));
     }
 
+    //algorithm to create the shortest route, indicating a list and the starting point.
     public static ArrayList<PlaceDist> getShortestRoute(ArrayList<PlaceDist> currList, PlaceDist initialPlace)
     {
         ArrayList<PlaceDist> newList = new ArrayList<>();
@@ -48,6 +51,7 @@ public class PlacesDistance {
         return newList;
     }
 
+    //gets the place with the shortest distance to the origin from a list
     public static PlaceDist getNearestPlace(ArrayList<PlaceDist> remainingList,PlaceDist origin)
     {
         PlaceDist next = remainingList.get(0);
@@ -69,6 +73,11 @@ public class PlacesDistance {
     public static double getDistance(PlaceDist pl1, PlaceDist pl2)
     {
         return Math.sqrt(Math.pow((pl1.getLat()-pl2.getLat()),2)+Math.pow((pl1.getLon()-pl2.getLon()),2));
+    }
+
+    public static void restartListPlaces()
+    {
+        listPlaces=new ArrayList<>();
     }
 
 }

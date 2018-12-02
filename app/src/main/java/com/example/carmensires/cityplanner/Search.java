@@ -1,5 +1,7 @@
 package com.example.carmensires.cityplanner;
 
+
+//this class stores the parameter of each search
 public class Search {
 
     private static String city;
@@ -38,5 +40,12 @@ public class Search {
 
     public static void setnPlaces(int nPlaces) {
         Search.nPlaces = nPlaces;
+    }
+
+    public static void restartSearch()
+    {
+        city=new String();
+        nDays=0;
+        nPlaces=0;
     }
 }

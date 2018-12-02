@@ -29,7 +29,7 @@ public class PlacesYelp {
 
     public static void getYelpPlaces()
     {
-
+        //create a thread so that we don't make the query from the main process
         Thread t = new Thread(new Runnable() {
             public void run() {
 
@@ -39,6 +39,7 @@ public class PlacesYelp {
                 YelpFusionApiFactory apiFactory = new YelpFusionApiFactory();
                 YelpFusionApi yelpFusionApi = null;
 
+                //when initializing the API, we indicate the token
                 try {
                     yelpFusionApi = apiFactory.createAPI("aMbFl-deJHchPQOyqqlWlW2rjMoTFAHLumHzFphGyFMkMCMj199UWm7SkmtjX0jnuf_x6qomiVKDkhfGaAZ3EIr71093SuPQEa-pQq_F33snaWqOed5y2m0jnRzvW3Yx");
                 } catch (IOException e) {
@@ -47,37 +48,40 @@ public class PlacesYelp {
 
                 Map<String, String> params = new HashMap<>();
 
-                //general params
+                //gput general parameters to make the query
                 params.put("term", "Things to do");
                 params.put("location",Search.getCity());
                 params.put("sort_by","best_match");
-                //params.put("limit", String.valueOf(Search.getnPlaces()));
 
                 Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(params);
-                //Call<SearchResponse> call = yelpFusionApi.getPhoneSearch("+18014384823");
                 Response<SearchResponse> response = null ;
 
+                //get the response from the YELP API
                 try {
                     response = call.execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                //add the places got in the response to a list
                 for(Business bussiness:response.body().getBusinesses()){
                     Log.d("RESPONSE", bussiness.getName());
                     list.add(bussiness.getName());
                     Log.d("PLACES IN THR", String.valueOf(PlacesYelp.getList()));
                 }
-                Log.d("PLACES THREAD",list.get(2));
-                //Thread.currentThread().interrupt();
             }
         });
         t.start();
 
+        //wait for the thread to finish before going on, so that all the values are correctly stored
         try {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static void restartList(){
+        list = new ArrayList<>();
     }
 }

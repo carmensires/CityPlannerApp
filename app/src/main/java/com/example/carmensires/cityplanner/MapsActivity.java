@@ -1,11 +1,13 @@
 package com.example.carmensires.cityplanner;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ArrayList<String> places = new ArrayList<>();
+    //list of colors for the different days
     private int[] listColors = {Color.RED,Color.BLUE,Color.MAGENTA,Color.GREEN,Color.CYAN,Color.YELLOW,
             Color.RED,Color.BLUE,Color.MAGENTA,Color.GREEN,Color.CYAN,Color.YELLOW,
             Color.RED,Color.BLUE,Color.MAGENTA,Color.GREEN,Color.CYAN,Color.YELLOW,
@@ -39,35 +42,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-
-
         Geocoder geo = new Geocoder(this);
         List<Address> addressCurr = null;
-
-        //initialize a li
-        //        Geocoder geo = new Geocoder(this);
-        //        List<Address> addressCurr = null;
-        //
-        //        //initializest of places with their latitude and longitude
+        //for each place, gets the location and saves it to a list in PlacesDistance class
         for(int i=0; i<Search.getnPlaces();i++)
         {
             try {
@@ -81,11 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        //setMarkersAndLines(PlacesDistance.getListPlaces());
+        //set markers and routes using the optimal route
         setMarkersAndLines(PlacesDistance.getOptimalRoute(PlacesDistance.getListPlaces()));
 
-        int middle = Search.getnPlaces()/2;
-
+        //set camera in the first place of the list
         CameraPosition cameraPosition = CameraPosition.builder()
                 .target(new LatLng(PlacesDistance.getListPlaces().get(0).getLat(),PlacesDistance.getListPlaces().get(0).getLon()))
                 .zoom(12)
@@ -95,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    //set markers and routes between places with the optimal route and with different colors for each day
     public void setMarkersAndLines(ArrayList<PlaceDist> listPlaces)
     {
 
@@ -119,8 +102,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //for each day put markers and draw lines between them
                 for(int i=0; i<placesDay.size();i++)
                 {
-
-
                         latLngCurr = new LatLng(placesDay.get(i).getLat(),placesDay.get(i).getLon());
                         Log.d("LATLONG",placesDay.get(i)+", Lat: "+latLngCurr.latitude+", Long: "+latLngCurr.longitude);
                         mMap.addMarker(new MarkerOptions().position(latLngCurr).title(placesDay.get(i).getName()));
@@ -137,6 +118,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
+    }
+
+    public void onClick(View view)
+    {
+        //when the "New search" button is pressed, restart the data
+        restartActivities();
+        Intent i = new Intent(this, CityActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void restartActivities()
+    {
+        Search.restartSearch();
+        PlacesDistance.restartListPlaces();
+        PlacesYelp.restartList();
     }
 
 

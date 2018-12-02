@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+//the purpose of this activity is to introduce the name of the city
+
 public class CityActivity extends AppCompatActivity {
 
     private static EditText city;
@@ -21,11 +24,13 @@ public class CityActivity extends AppCompatActivity {
 
         this.city = findViewById(R.id.city);
         if (!getCity().equals("")) {
+            //save the name of the city and open the next activity: DaysActivity
             Search.setCity(getCity());
             Intent i = new Intent(this, DaysActivity.class);
             startActivity(i);
             finish();
         } else {
+            //make sure the user doesn't leave the city field empty
             Toast.makeText(CityActivity.this, "You have to introduce a city", Toast.LENGTH_LONG).show();
         }
 
